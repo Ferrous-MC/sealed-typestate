@@ -8,7 +8,7 @@ macro_rules! sealed_typestate {
             impl $state for $states {}
         )*
     };
-    ($state:ident $sealed:ty { $($states:ident),* }) => {
+    ($state:ident $sealed:path { $($states:ident),* }) => {
         pub trait $state: $sealed {}
         $(
             pub enum $states {}
