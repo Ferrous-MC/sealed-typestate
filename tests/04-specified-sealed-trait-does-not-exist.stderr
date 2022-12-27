@@ -1,5 +1,5 @@
 error[E0433]: failed to resolve: use of undeclared crate or module `wrong`
- --> tests/04-specified-sealed-trait-doesn't-exist.rs:7:23
+ --> tests/04-specified-sealed-trait-does-not-exist.rs:7:23
   |
 7 | sealed_typestate!(Foo<wrong::path::Sealed> { Bar, Baz });
   |                       ^^^^^ use of undeclared crate or module `wrong`
