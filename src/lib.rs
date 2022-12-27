@@ -3,52 +3,22 @@
 //! Declare enum-based typestates easily
 
 #[macro_export]
-/// # Declare a new sealed typestate
-///
 /// # Example
+/// In this example, a typestate called `State` is declared with two states: `State1` and `State2`.
 /// ```
 /// mod private {
-///     pub trait Sealed {}
-/// }
-/// use std::marker::PhantomData;
-/// use sealed_typestate::sealed_typestate;
-///
-/// sealed_typestate!(State {
-///     State1,
-///     State2
-/// });
-///
-/// struct Foo<S>
-/// where S: State {
-///     _marker: PhantomData<S>
-/// }
-/// impl Foo<State1> {
-///     fn new() -> Self {
-///         Self {  _marker: PhantomData  }
-///   }
-/// }
-/// impl Foo<State1> {
-///     fn state1_only(&self) {}
-/// }
-///
-/// impl Foo<State2> {
-///    fn state2_only(&self) {}
-/// }
-/// ```
-/// For this setups, this will compile:
-/// ```
-/// # mod private {
 /// #     pub trait Sealed {}
 /// # }
 /// # use std::marker::PhantomData;
 /// # use sealed_typestate::sealed_typestate;
+/// use private::Sealed;
 /// #
-/// # sealed_typestate!(State {
-/// #    State1,
-/// #    State2
-/// # });
+/// sealed_typestate!(State<Sealed> {
+///    State1,
+///    State2
+/// });
 /// #
-/// # struct Foo<S>
+/// struct Foo<S>
 /// # where S: State {
 /// #     _marker: PhantomData<S>
 /// # }
@@ -59,49 +29,18 @@
 /// #       }
 /// #   }
 /// # }
-/// # impl Foo<State1> {
-/// #     fn state1_only(&self) {}
-/// # }
+/// impl Foo<State1> {
+///     fn state1_only(&self) {}
+/// }
 /// #
-/// # impl Foo<State2> {
-/// #    fn state2_only(&self) {}
-/// # }
+/// impl Foo<State2> {
+///    fn state2_only(&self) {}
+/// }
 /// let foo = Foo::new();
+/// // This will compile
 /// foo.state1_only();
-/// ```
-/// But this will not:
-/// ```
-/// # mod private {
-/// #    pub trait Sealed {}
-/// # }
-/// # use std::marker::PhantomData;
-/// # use sealed_typestate::sealed_typestate;
-///
-/// # sealed_typestate!(State {
-/// #    State1,
-/// #    State2
-/// # });
-/// #
-/// # struct Foo<S>
-/// # where S: State {
-/// #     _marker: PhantomData<S>
-/// # }
-/// # impl<S> Foo<S> {
-/// #     fn new() -> Self<State1> {
-/// #        Self {
-/// #           _marker: PhantomData
-/// #       }
-/// #   }
-/// # }
-/// # impl Foo<State1> {
-/// #     fn state1_only(&self) {}
-/// # }
-/// #
-/// # impl Foo<State2> {
-/// #    fn state2_only(&self) {}
-/// # }
-/// let foo = Foo::new();
-/// foo.state2_only();
+/// // This will not compile
+/// // foo.state2_only();
 /// ```
 ///
 macro_rules! sealed_typestate {
