@@ -15,8 +15,14 @@ macro_rules! sealed_typestate {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use trybuild::TestCases;
 
     #[test]
-    fn test_compiles() {}
+    fn test_compiles() {
+        let t = TestCases::new();
+        t.pass("tests/01-default-sealed-trait.rs");
+        t.pass("tests/02-specified-sealed-trait.rs");
+        t.compile_fail("tests/03-default-sealed-trait-doesn't-exist.rs");
+        t.compile_fail("tests/04-specified-sealed-trait-doesn't-exist.rs");
+    }
 }
