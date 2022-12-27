@@ -22,7 +22,12 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn specified_sealed_trait() {
+        sealed_typestate!(Side crate::private::Sealed { Client, Server });
+    }
+
+    #[test]
+    fn default_sealed_trait() {
         sealed_typestate!(Side { Client, Server });
     }
 }
