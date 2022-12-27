@@ -1,7 +1,17 @@
 [package]
 name = "sealed-typestate"
 version = "0.1.3"
+authors = ["CielMC"]
 edition = "2021"
+rust-version = "1.66.0"
+description = "Simple macro for declaring sealed 0 value typestates"
+#documentation = "N/A"
+#readme = "N/A"
+#homepage = "N/A"
+repository = "https://github.com/Ferrous-MC/sealed-typestate"
+license = "MIT OR Apache-2.0"
+keywords = ["typestate", "convinience", "macro"]
+categories = ["development-tools"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
