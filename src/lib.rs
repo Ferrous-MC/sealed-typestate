@@ -1,12 +1,7 @@
 #[macro_export]
 macro_rules! sealed_typestate {
     ($state:ident { $($states:ident),* }) => {
-        pub trait $state: crate::sealed::Sealed {}
-        $(
-            pub enum $states {}
-            impl crate::sealed::Sealed for $states {}
-            impl $state for $states {}
-        )*
+        sealed_typestate!($state crate::private::Sealed { $($states),* });
     };
     ($state:ident $sealed:path { $($states:ident),* }) => {
         pub trait $state: $sealed {}
@@ -18,7 +13,7 @@ macro_rules! sealed_typestate {
     };
 }
 
-mod sealed {
+mod private {
     pub trait Sealed {}
 }
 
