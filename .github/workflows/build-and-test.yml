@@ -11,12 +11,20 @@ env:
 
 jobs:
   build:
-
+    name: Build and test
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --verbose
+    - name: Use latest stable Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+    - name: Run Cargo build
+      uses: actions-rs/cargo@v1
+      with:
+          command: build
     - name: Run tests
-      run: cargo test --verbose
+      uses: actions-rs/cargo@v1
+      with:
+          command: test
