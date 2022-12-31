@@ -18,9 +18,39 @@
 ///    State2
 /// });
 /// #
-/// struct Foo<S>
-/// # where S: State {
-/// #     _marker: PhantomData<S>
+/// struct Foo<S: State> {
+///     _marker: PhantomData<S>,
+/// }
+/// # impl Foo<State1> {
+/// #     fn new() -> Self {
+/// #        Self {
+/// #           _marker: PhantomData
+/// #       }
+/// #   }
+/// # }
+/// impl Foo<State1> { fn state1_only(&self) {} }
+/// #
+/// impl Foo<State2> { fn state2_only(&self) {} }
+/// let foo = Foo::new();
+/// // This will compile
+/// foo.state1_only();
+/// ```
+/// While this will not:
+/// ```compile_fail
+/// # mod private {
+/// #     pub trait Sealed {}
+/// # }
+/// # use std::marker::PhantomData;
+/// # use sealed_typestate::sealed_typestate;
+/// # use private::Sealed;
+/// #
+/// # sealed_typestate!(State<Sealed> {
+/// #    State1,
+/// #    State2
+/// # });
+/// #
+/// # struct Foo<S: State> {
+/// #     _marker: PhantomData<S>,
 /// # }
 /// # impl Foo<State1> {
 /// #     fn new() -> Self {
@@ -29,18 +59,10 @@
 /// #       }
 /// #   }
 /// # }
-/// impl Foo<State1> {
-///     fn state1_only(&self) {}
-/// }
-/// #
-/// impl Foo<State2> {
-///    fn state2_only(&self) {}
-/// }
-/// let foo = Foo::new();
-/// // This will compile
-/// foo.state1_only();
-/// // This will not compile
-/// // foo.state2_only();
+/// # impl Foo<State1> { fn state1_only(&self) {} }
+/// # impl Foo<State2> { fn state2_only(&self) {} }
+/// # let foo = Foo::new();
+/// foo.state2_only();
 /// ```
 ///
 macro_rules! sealed_typestate {
